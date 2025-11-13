@@ -3,10 +3,12 @@ rustup target for riscv64gc-unknown-uefi
 
 ## How to use
 
-Clone the repository to the place you want the target to live.
-Preferably a hidden directory in your home directory
+Clone the repository inside of your target project.
 
-`export RUST_TARGET_PATH=/path/to/your/rustup-riscv64gc-unknown-uefi`
+Since I am building from an x86_64 host, I had to run the following command
+to get the Rust nightly sources...
+
+`rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu`
 
 In order to get the linker to work, I had to define a custom linker file as follows
 
@@ -38,12 +40,12 @@ SECTIONS
 }
 ```
 
-Finally, I created a `config.toml` file in a `.cargo` subdirectory under my main projects root directory
+I created a `config.toml` file in a `.cargo` subdirectory under my main projects root directory
 which contained the following...
 
 ```
 [build]
-target = "riscv64gc-unknown-uefi"
+target = "rustup-riscv64gc-unknown-uefi/riscv64gc-unknown-uefi.json"
 
 [unstable]
 build-std = ["core", "alloc"]
@@ -56,5 +58,9 @@ rustflags = [
     "-C", "link-arg=-Tlinker.ld",
 ]
 ```
+
+Finally, I ran the following command to build my project...
+
+`cargo +nightly build -Z build-std=core,alloc --target rustup-riscv64gc-unknown-uefi/riscv64gc-unknown-uefi.json`
 
 This was sufficient to get my project to build with the custom RISC-V UEFI target...
