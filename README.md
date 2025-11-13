@@ -61,6 +61,6 @@ rustflags = [
 
 Finally, I ran the following command to build my project...
 
-`cargo +nightly build -Z build-std=core,alloc --target rustup-riscv64gc-unknown-uefi/riscv64gc-unknown-uefi.json`
+`cargo +nightly build -Z build-std=core,alloc`
 
 This was sufficient to get my project to build with the custom RISC-V UEFI target...
